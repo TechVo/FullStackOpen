@@ -1,0 +1,14 @@
+browser -> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server --> browser: Html code
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server --> browser: stylesheet
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server --> browser: JS code
+
+browser starts executing local JS code and requests data from server 
+
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server --> browser: notes in json format
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/favicon.ico
+server --> browser: Html code
