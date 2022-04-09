@@ -3,16 +3,11 @@ import { useState } from 'react'
 const Button = ({ handleClick, text }) => 
   <button onClick={handleClick}>{text}</button>
 
-const StatisticsLine = ({value, text}) => {
-  let suffix = ""
-  if (text === "positive") {
-    suffix = " %"
-  }
-
+const StatisticsLine = ({ value, text, suffix }) => {
   return(
       <tr>
         <td>
-          {text}:{' '} 
+          {text}: 
         </td>
         <td>
           {value}{suffix}
@@ -41,7 +36,7 @@ const Statistics = ({good, bad, neutral}) => {
         <StatisticsLine value={neutral} text="neutral" />
         <StatisticsLine value={bad} text="bad" />
         <StatisticsLine value={((good - bad) / all).toFixed(1)} text="average" />
-        <StatisticsLine value={(good / all * 100).toFixed(1)} text="positive" />
+        <StatisticsLine value={(good / all * 100).toFixed(1)} text="positive" suffix={" %"} />
       </table>
     </div>
   )
