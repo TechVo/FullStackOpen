@@ -1,27 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import Phonebook from './Phonebook'
 import AddPerson from './AddPerson'
 
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { 
-      name: 'Arto Hellas',
-      number: '+42088444' 
-    },
-    {
-      name: 'Giovanni Georgio',
-      number: '88883333'
-    },
-    {
-      name: 'Art Geo',
-      number: '7352222111'
-    },
-    {
-      name: 'Ella Fitzgerald',
-      number: '9999990000'
-    }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -55,6 +40,21 @@ const App = () => {
     console.log(`filter: ${event.target.value}`)
     setFilter(event.target.value)
   }
+
+  const hook = () => {
+    console.log('effect hook taking a place...')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fullfiled')
+        console.log(response.data)
+        setPersons(response.data)
+      })
+  }
+
+  useEffect(hook, [])
+
+  console.log(`${persons.length} persons retrieved`)
 
   return (
     <div>
