@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import Phonebook from './components/Phonebook'
 import AddPerson from './components/AddPerson'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [showNotification, setShowNotification] = useState(false)
+  const [errorNotificaiton, setErrorNotificaiton] = useState(false)
+  const [notificationName, setNotificationName] = useState('')
 
   const personsToShow = persons.filter((person) => {
     return person.name.toLowerCase().indexOf(filter.toLowerCase()) != -1
@@ -65,6 +69,12 @@ const App = () => {
       .then(person => {
         console.log(person)
         setPersons(persons.concat(person))
+        setNotificationName(person.name)
+        setErrorNotificaiton(false)
+        setShowNotification(true)
+        setTimeout(() => {
+          setShowNotification(false)
+        }, 5000)
       })
       .catch(error => {
         console.log("Couldn't add person to server!")
@@ -79,6 +89,13 @@ const App = () => {
         setPersons(persons.filter(person => person.id != id))
       })
       .catch(error => {
+        setPersons(persons.filter(person => person.id != id))
+        setNotificationName(persons.find(person => person.id == id).name)
+        setErrorNotificaiton(true)
+        setShowNotification(true)
+        setTimeout(() => {
+          setShowNotification(false)
+        }, 5000)
         console.error(error)
       })
   }
@@ -107,6 +124,11 @@ const App = () => {
       <AddPerson addPerson={addPerson} 
         newName={newName} handleNameChange={handleNameChange} 
         newNumber={newNumber} handleNumberChange={handleNumberChange} />
+
+      <Notification name={notificationName} 
+        showNotification={showNotification} 
+        errorNotificaiton={errorNotificaiton} />
+
       <Phonebook filter={filter} handleFilterChange={handleFilterChange} 
       personsToShow={personsToShow} deletePerson={deletePerson}/>
     </div>
